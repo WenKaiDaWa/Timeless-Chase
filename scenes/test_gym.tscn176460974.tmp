@@ -1,0 +1,84 @@
+[gd_scene load_steps=8 format=3 uid="uid://3vfflbuvcr7p"]
+
+[ext_resource type="PackedScene" uid="uid://bxd6kxehl7g0x" path="res://scenes/player.tscn" id="1_a2oc3"]
+[ext_resource type="PackedScene" uid="uid://iwvqiyf3r08y" path="res://scenes/ui.tscn" id="2_bpeew"]
+[ext_resource type="PackedScene" uid="uid://igyqfbfqhl5v" path="res://scenes/debug_overlay.tscn" id="3_7wgmg"]
+[ext_resource type="PackedScene" uid="uid://c481syh4bf01c" path="res://scenes/enemy.tscn" id="4_lrs63"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gc0iy"]
+size = Vector2(1176, 20)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_a2oc3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a2oc3"]
+size = Vector2(20, 668)
+
+[node name="TestGym" type="Node2D"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(578, 0)
+shape = SubResource("RectangleShape2D_gc0iy")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
+position = Vector2(578.763, -0.112713)
+scale = Vector2(-1177.56, 20.3894)
+texture = SubResource("PlaceholderTexture2D_a2oc3")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(0, 324)
+shape = SubResource("RectangleShape2D_a2oc3")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2/CollisionShape2D"]
+position = Vector2(1.92319, -0.717697)
+scale = Vector2(-23.8762, 672.579)
+texture = SubResource("PlaceholderTexture2D_a2oc3")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+position = Vector2(586, 646)
+shape = SubResource("RectangleShape2D_gc0iy")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D3/CollisionShape2D"]
+position = Vector2(-1.99994, -1.99998)
+scale = Vector2(-1177.56, 20.3894)
+texture = SubResource("PlaceholderTexture2D_a2oc3")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
+position = Vector2(1151, 320)
+shape = SubResource("RectangleShape2D_a2oc3")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D4/CollisionShape2D"]
+position = Vector2(1.92319, -0.717697)
+scale = Vector2(-23.8762, 672.579)
+texture = SubResource("PlaceholderTexture2D_a2oc3")
+
+[node name="Player" parent="." instance=ExtResource("1_a2oc3")]
+position = Vector2(211, 211)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ui" parent="CanvasLayer" instance=ExtResource("2_bpeew")]
+
+[node name="DebugOverlay" parent="CanvasLayer" node_paths=PackedStringArray("player_node", "stamina_bar", "stamina_ghost_bar") instance=ExtResource("3_7wgmg")]
+player_node = NodePath("../../Player")
+stamina_bar = NodePath("../ui/StaminaBar")
+stamina_ghost_bar = NodePath("../ui/StaminaGhostBar")
+
+[node name="Enemy" parent="." instance=ExtResource("4_lrs63")]
+position = Vector2(211, 457)
+
+[node name="Hitbox" parent="Enemy" index="2"]
+collision_layer = 8
+collision_mask = 4
+
+[editable path="CanvasLayer/ui"]
+[editable path="Enemy"]

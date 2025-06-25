@@ -1,0 +1,69 @@
+[gd_scene load_steps=4 format=3 uid="uid://bjawij500rtrr"]
+
+[ext_resource type="Texture2D" uid="uid://cb3d0ol1h17di" path="res://My-Game-Project/sprites/cylinder_empty.png" id="1_6t4fx"]
+[ext_resource type="Script" uid="uid://dx1qc7w3sudm2" path="res://My-Game-Project/scripts/cylinder_ui.gd" id="1_oyc7v"]
+[ext_resource type="Texture2D" uid="uid://pmsv50nmwn4u" path="res://My-Game-Project/sprites/bullet_icon.png" id="3_pe211"]
+
+[node name="CylinderUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oyc7v")
+
+[node name="CylinderBase" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.096
+anchor_top = 0.708
+anchor_right = 0.096
+anchor_bottom = 0.708
+offset_left = -100.592
+offset_top = -102.784
+offset_right = 97.408
+offset_bottom = 95.216
+rotation = 0.535816
+pivot_offset = Vector2(98.5, 105.5)
+texture = ExtResource("1_6t4fx")
+expand_mode = 1
+
+[node name="BulletContainer" type="Node2D" parent="."]
+position = Vector2(109, 461)
+
+[node name="Slot1" type="Sprite2D" parent="BulletContainer"]
+position = Vector2(44, -24)
+scale = Vector2(0.0970001, 0.096344)
+texture = ExtResource("3_pe211")
+offset = Vector2(-5, 540)
+
+[node name="Slot2" type="Sprite2D" parent="BulletContainer"]
+position = Vector2(43, 27)
+scale = Vector2(0.0970001, 0.096344)
+texture = ExtResource("3_pe211")
+offset = Vector2(-5, 540)
+
+[node name="Slot3" type="Sprite2D" parent="BulletContainer"]
+position = Vector2(-1, 50)
+scale = Vector2(0.0970001, 0.096344)
+texture = ExtResource("3_pe211")
+offset = Vector2(-5, 540)
+
+[node name="Slot4" type="Sprite2D" parent="BulletContainer"]
+position = Vector2(-43, 24)
+scale = Vector2(0.0970001, 0.096344)
+texture = ExtResource("3_pe211")
+offset = Vector2(-5, 540)
+
+[node name="Slot5" type="Sprite2D" parent="BulletContainer"]
+position = Vector2(-43, -26)
+scale = Vector2(0.0970001, 0.096344)
+texture = ExtResource("3_pe211")
+offset = Vector2(-5, 540)
+
+[node name="Slot6" type="Sprite2D" parent="BulletContainer"]
+position = Vector2(2, -51)
+scale = Vector2(0.0970001, 0.096344)
+texture = ExtResource("3_pe211")
+offset = Vector2(-5, 540)

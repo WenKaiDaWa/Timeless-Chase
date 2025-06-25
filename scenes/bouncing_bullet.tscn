@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://b0cssd3fn52ri"]
+
+[ext_resource type="Script" uid="uid://yvngjurnra7a" path="res://scripts/bouncing_bullet.gd" id="1_js1dj"]
+[ext_resource type="Texture2D" uid="uid://bev240gh2hhje" path="res://sprites/green-circle-png-15.png" id="2_71l5u"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hkfdp"]
+friction = 0.0
+bounce = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ynm3f"]
+radius = 6.08276
+
+[sub_resource type="Curve" id="Curve_hkfdp"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_hkfdp"]
+offsets = PackedFloat32Array(0.00666667, 1)
+colors = PackedColorArray(0, 1, 0, 0, 0, 1, 0, 1)
+
+[node name="BouncingBullet" type="RigidBody2D" groups=["bullets"]]
+collision_layer = 4
+collision_mask = 5
+mass = 0.021
+physics_material_override = SubResource("PhysicsMaterial_hkfdp")
+gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_js1dj")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.01, 0.01)
+texture = ExtResource("2_71l5u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ynm3f")
+
+[node name="Line2D" type="Line2D" parent="."]
+top_level = true
+width_curve = SubResource("Curve_hkfdp")
+default_color = Color(0.235294, 1, 0.34902, 1)
+gradient = SubResource("Gradient_hkfdp")
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

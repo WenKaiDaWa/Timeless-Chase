@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bxd6kxehl7g0x"]
+
+[ext_resource type="Script" uid="uid://drqf0frndmddc" path="res://My-Game-Project/scripts/player.gd" id="1_pyxjr"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_pls03"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g51r6"]
+size = Vector2(76, 98)
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_layer = 2
+script = ExtResource("1_pyxjr")
+fire_cooldown_duration = 0.4
+slowdown_factor = 0.025
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(-77.23, 99.01)
+texture = SubResource("PlaceholderTexture2D_pls03")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_g51r6")

@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbn3wyuytsm0n"]
+
+[ext_resource type="Script" uid="uid://dsicaxk4yedam" path="res://My-Game-Project/scripts/time_immunity_test.gd" id="1_u8o1h"]
+
+[node name="TimeImmunityTest" type="Node2D"]
+position = Vector2(280, 128)
+script = ExtResource("1_u8o1h")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
