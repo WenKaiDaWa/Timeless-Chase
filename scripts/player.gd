@@ -96,31 +96,68 @@ func handle_inputs():
 func _update_trajectory():
 	trajectory_line.clear_points()
 
-	# These calculations perfectly mirror your fire_bullet() function for accuracy
-	var mouse_position = get_global_mouse_position()
-	var fire_direction = (mouse_position - global_position).normalized()
-	var start_pos = global_position + fire_direction * 20
+	# --- Initial Setup ---
+	var mouse_pos = get_global_mouse_position()
+	var current_direction = (mouse_pos - global_position).normalized()
+	var current_position = global_position + current_direction * 20
+	var bounces_left = MAX_BOUNCES
 	
-	var remaining_bounces = MAX_BOUNCES
+	# We start the line from the player's muzzle
+	trajectory_line.add_point(to_local(current_position))
+	
+	var all_bullets = get_tree().get_nodes_in_group("bullets")
 	var space_state = get_world_2d().direct_space_state
-	
-	# Add the very first point of the line
-	trajectory_line.add_point(to_local(start_pos))
 
-	while remaining_bounces >= 0:
-		var query = PhysicsRayQueryParameters2D.create(start_pos, start_pos + fire_direction * 4000)
-		query.exclude = [self] # Exclude the player itself from the raycast
+	# --- Simulation Parameters ---
+	# time_step: How far into the future we check each segment. Smaller is more accurate but more expensive.
+	const time_step = 0.03 
+	# num_segments: How many steps we simulate. This determines the max length of the line.
+	const num_segments = 100 
+
+	for i in range(num_segments):
+		var move_vector = current_direction * 600 * time_step # 600 is your bullet speed
+
+		# --- 1. Check for WALL collisions first ---
+		var wall_query = PhysicsRayQueryParameters2D.create(current_position, current_position + move_vector)
+		wall_query.exclude = [self] + all_bullets # Ignore player and bullets for wall check
+		var wall_result = space_state.intersect_ray(wall_query)
 		
-		var result = space_state.intersect_ray(query)
+		if wall_result:
+			# Hit a wall. Add the point, calculate bounce, and continue simulation.
+			trajectory_line.add_point(to_local(wall_result.position))
+			current_direction = current_direction.bounce(wall_result.normal)
+			current_position = wall_result.position + current_direction * 0.1
+			bounces_left -= 1
+			if bounces_left < 0:
+				break # Stop if we're out of bounces
+			continue # Go to next loop iteration with new bounce direction
+
+		# --- 2. If no wall, check for BULLET collisions ---
+		var hit_a_bullet = false
+		for bullet in all_bullets:
+			# Predict the future position of this existing bullet
+			var bullet_future_pos = bullet.global_position + bullet.linear_velocity * time_step * (i + 1)
+			# Predict the future position of our new bullet
+			var our_future_pos = current_position + move_vector
+			
+			# Check if our path segment intersects the bullet's future position
+			# We treat the bullet as a small circle (radius ~10)
+			if Geometry2D.segment_intersects_circle(current_position, our_future_pos, bullet_future_pos, 10.0) != -1:
+				# A collision is predicted!
+				trajectory_line.add_point(to_local(our_future_pos))
+				
+				# For simplicity, we'll just stop the line here.
+				# Predicting bounces between two moving objects is extremely complex.
+				hit_a_bullet = true
+				break
 		
-		if result:
-			trajectory_line.add_point(to_local(result.position))
-			fire_direction = fire_direction.bounce(result.normal)
-			start_pos = result.position + fire_direction * 0.1
-			remaining_bounces -= 1
-		else:
-			trajectory_line.add_point(to_local(start_pos + fire_direction * 4000))
-			break # Stop if the ray flies off into space
+		if hit_a_bullet:
+			break # Exit the main simulation loop if we predicted a bullet collision
+
+		# --- 3. If nothing was hit, just extend the line ---
+		current_position += move_vector
+		trajectory_line.add_point(to_local(current_position))
+
 
 func fire_bullet():
 	current_ammo -= 1
